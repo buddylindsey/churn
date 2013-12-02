@@ -1,0 +1,22 @@
+{% extends 'base.jinja' %}
+
+{% block content %}
+<ul class="section" ng-repeat="task in tasks">
+  {% raw %}
+  <li>{{ task.title }}</li>
+  {% endraw %}
+</ul>
+<div id="main" ng-controller="EditController">
+{% raw %}
+  <h5>Add Task</h5>
+  <form class="">
+    <div class="form-group block-level">
+        <input type="text" class="form-control" id="title" ng-model="task.title" placeholder="Title">
+    </div>
+    <div class="form-group">
+        <button class="btn btn-default" ng-click="save()">Add Post</button>
+    </div>
+  </form>
+{% endraw %}
+</div>
+{% endblock %}
