@@ -7,17 +7,18 @@
     {% block head %}{% endblock %}
   </head>
   <body ng-app="{% block ng_app %}churn.app{% endblock %}">
-    <div class="content" ng-controller="{% block ng_controller %}AppController{% endblock %}">
+    <div class="content">
     {% block content %}
     {% endblock %}
     </div>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+    <script src="//code.angularjs.org/1.2.1/angular-resource.min.js"></script>
     <script src="{{ static('js/main.js') }}"></script>
     <script>
       // Add the CSRF Token
-      var app = angular.module('example.app'); // Not including a list of dependent modules (2nd parameter to `module`) "re-opens" the module for additional configuration
+      var app = angular.module('churn.app');
       app.config(['$httpProvider', function($httpProvider) {
           $httpProvider.defaults.headers.common['X-CSRFToken'] = '{{ csrf_token|escapejs }}';
       }]);

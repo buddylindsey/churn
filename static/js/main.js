@@ -1,19 +1,35 @@
-var app = angular.module('churn.app', []);
+var app = angular.module('churn.app', ['ngResource']);
 
-app.controller('AppController', ['$scope', '$http', function($scope, $http){
-  $scope.tasks = [];
-  $http.get('/api/tasks/').then(function(result){
-    angular.forEach(result.data, function(item){
-      $scope.tasks.push(item);
+app.factory('Task', ['$resource', function($resource) {
+    return $resource('/api/tasks/:id/', { id: '@id' }, {
+      update: { method: 'PUT' }
     });
-  });
-}]);
+  }
+]);
 
-app.controller('EditController', ['$scope', '$http', function($scope, $http){
-  $scope.save = function(){
-    data = {title: $("#title").val()}
-    $http.post('/api/tasks/', data).success(function(result){
+
+app.controller('AppController', ['$scope', 'Task', function($scope, Task){
+  $scope.tasks = Task.query();
+  $scope.newTask = new Task();
+
+  $scope.markComplete = function(){
+    var task = this.task;
+    task.completion_date = new Date();
+    task.$update()
+  };
+
+  $scope.deleteTask = function(){
+    this.task.$delete().then(function(){
+      var idx = $scope.tasks.indexOf(this.task);
+      $scope.tasks.slice(idx, 1);
+    });
+  };
+
+  $scope.save = function() {
+    $scope.newTask.$save().then(function(result) {
       $scope.tasks.push(result);
+    }).then(function() {
+      $scope.newTask = new Task();
     });
   };
 }]);

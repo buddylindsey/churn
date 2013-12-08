@@ -7,4 +7,4 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = (
             'id', 'title', 'slug', 'description', 'created', 'completion_date',
-            'due_date')
+            'due_date', 'order', 'category')
